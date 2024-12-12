@@ -1,43 +1,42 @@
 #!/usr/bin/python3
-"""
-Prime Game Module
-"""
+"""0. Prime Game - Maria and Ben are playing a game"""
 
 
 def isWinner(x, nums):
+    """x - rounds
+    nums - numbers list
     """
-    Prime Game Function
-    """
-    maria = 0
+    if x <= 0 or nums is None:
+        return None
+    if x != len(nums):
+        return None
+
     ben = 0
+    maria = 0
 
-    def SieveOfEratosthenes(n):
-        """Sieve of Eratosthenes Function"""
+    a = [1 for x in range(sorted(nums)[-1] + 1)]
+    a[0], a[1] = 0, 0
+    for i in range(2, len(a)):
+        rm_multiples(a, i)
 
-        prime = [True for i in range(n + 1)]
-        pointer = 2
-        while pointer * pointer <= n:
-            if prime[pointer] == True:
-                for i in range(pointer * pointer, n + 1, pointer):
-                    prime[i] = False
-            pointer += 1
-        prime[0] = False
-        prime[1] = False
-        return prime
-
-    max_n = max(nums)
-    primes = SieveOfEratosthenes(max_n)
-
-    for round in nums:
-        round_primes = [i for i in range(round + 1) if primes[i]]
-        if len(round_primes) % 2 == 0:
+    for i in nums:
+        if sum(a[0:i + 1]) % 2 == 0:
             ben += 1
         else:
             maria += 1
-
+    if ben > maria:
+        return "Ben"
     if maria > ben:
         return "Maria"
-    elif ben > maria:
-        return "Ben"
-
     return None
+
+
+def rm_multiples(ls, x):
+    """removes multiple
+    of primes
+    """
+    for i in range(2, len(ls)):
+        try:
+            ls[i * x] = 0
+        except (ValueError, IndexError):
+            break
